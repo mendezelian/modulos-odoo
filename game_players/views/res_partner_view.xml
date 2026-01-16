@@ -11,12 +11,12 @@
                         <group string="Identidad">
                             <field name="is_player"/>
                             <field name="nickname" required="is_player"/>
-                            <field name="image_1920" widget="image" class="oe_avatar"/>
+                            <field name="avatar" widget="image" class="oe_avatar" invisible="not is_player"/>
                         </group>
                         <group string="Progreso">
-                            <field name="nivel" readonly="not is_player"/>
-                            <field name="logros" readonly="not is_player"/>
-                            <field name="puntos_acumulados" readonly="not is_player"/>
+                            <field name="nivel" readonly=1 invisible="not is_player"/>
+                            <field name="logros" readonly=1 invisible="not is_player"/>
+                            <field name="puntos_acumulados" readonly=1 invisible="not is_player"/>
                         </group>
                     </group>
                 </page>

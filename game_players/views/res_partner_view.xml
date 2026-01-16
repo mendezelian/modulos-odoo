@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id = "view_partner_from_game_inherit" model="ir.ui.view">
+        <field name="name">res.partner.from.game.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_from"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Estado de jugadores", name="player_stats">
+                    <group>
+                        <group string="Identidad">
+                            <field name="is_player"/>
+                            <field name="nickname"/>
+                            <field name="avatar"/>
+                        </group>
+                        <group string="Progreso">
+                            <field name="nivel"/>
+                            <field name="logros"/>
+                            <fields name="puntos_acumulados"/>
+                        <group/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

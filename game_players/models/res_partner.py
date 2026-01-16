@@ -37,8 +37,8 @@ class ResPartner(models.Model):
         for record in self:
             pts = record.puntos_acumulados 
             #lógica para calcular el nivel
-            if pts >= 200: record.nivel = 100
-            elif pts > 0 : record.nivel = pts // 2
+            if pts >= 1000: record.nivel = 100
+            elif pts > 0 : record.nivel = pts // 10
             else: record.nivel = 0
 
     #Trigger para actualizar los logros según el puntaje acumulado
@@ -47,14 +47,14 @@ class ResPartner(models.Model):
         for record in self:
             pts = record.puntos_acumulados or 0
             #lógica de rango de puntos para los logros
-            if pts >= 200 : record.logros = 'debora_mundos'
-            elif pts >= 180 : record.logros = 'leyenda_flag'
-            elif pts >= 150 : record.logros = 'maestro_caza'
-            elif pts >= 130 : record.logros = 'depredador'
-            elif pts >= 120 : record.logros = 'guerrero'
-            elif pts >= 100 : record.logros = 'capturador'
-            elif pts >= 70 : record.logros = 'cazador_pistas'
-            elif pts >= 50 : record.logros = 'acechador'
-            elif pts >= 20 : record.logros = 'rastreador'
-            elif pts >= 3  : record.logros = 'iniciado'
+            if pts >= 1000 : record.logros = 'debora_mundos'
+            elif pts >= 900 : record.logros = 'leyenda_flag'
+            elif pts >= 800 : record.logros = 'maestro_caza'
+            elif pts >= 700 : record.logros = 'depredador'
+            elif pts >= 600 : record.logros = 'guerrero'
+            elif pts >= 500 : record.logros = 'capturador'
+            elif pts >= 400 : record.logros = 'cazador_pistas'
+            elif pts >= 300 : record.logros = 'acechador'
+            elif pts >= 200 : record.logros = 'rastreador'
+            elif pts >= 50  : record.logros = 'iniciado'
             else:             record.logros = False

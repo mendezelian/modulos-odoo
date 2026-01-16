@@ -14,7 +14,7 @@
                             <field name="avatar" widget="image" class="oe_avatar" invisible="not is_player"/>
                         </group>
                         <group string="Progreso">
-                            <div class="0_row">
+                            <div class="o_row">
                                 <field name="nivel" readonly="1" invisible="not is_player"/> 
                                 <field name="nivel" widget="progressbar"
                                     options="{'current_value':'nivel', 'max_value':100, 'editable':false, 'display_stat':false}"

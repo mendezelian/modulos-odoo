@@ -10,7 +10,6 @@
         'contacts'
     ],
     'data': [
-        'security/ir.model.access.csv',
         'views/res_partner_view.xml'
     ],
     'installable':True,

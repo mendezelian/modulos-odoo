@@ -57,4 +57,4 @@ class ResPartner(models.Model):
             elif pts >= 50 : record.logros = 'acechador'
             elif pts >= 20 : record.logros = 'rastreador'
             elif pts >= 3  : record.logros = 'iniciado'
-            elif             record.logros = False
+            else:             record.logros = False

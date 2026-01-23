@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+import logging
 
 LOGROS = [
     ('iniciado','Recluta de Campo'), # 3

@@ -77,7 +77,7 @@ class ResPartner(models.Model):
     @api.depends('puntos_acumulados')
     def _compute_nivel(self):
         for record in self:
-            ts = record.puntos_acumulados 
+            pts = record.puntos_acumulados 
             #lógica para calcular el nivel
             if pts >= 1000: record.nivel = 100
             elif pts > 0 : record.nivel = pts // 10

@@ -30,12 +30,54 @@ class ResPartner(models.Model):
         compute = "_compute_logro",
         store = True
     )
+    spring_id = fields.Integer("ID de SPRING", readonly = True)
     
+
+    #Override create
+    @api.model
+    def create(self,vals):
+        record = super().create(vals)
+        if vals.get("is_player"):
+            record._send_player_to_api()
+        return record
+
+    #Override write
+    def write(self,vals):
+        res = super().write(vals)
+        for record in self:
+            if vals.get("is_player") or record.is_player:
+                record._send_player_to_api()
+        return res
+    
+    #metodo para enviar datos
+    def _send_player_to_api(self):
+        url = "http://3.233.57.10:8080/api/v1/jugadores"
+
+        payload = {
+                "email": self.email,
+                "nombre":self.nickname
+        }
+
+        try:
+            if not self.spring_id:
+                response = requests.post(url, json = payload, timeout=5)
+                response.raise_for_status()
+                
+                data = response.json()
+                spring_id = data.get("id")
+
+                if spring_id:
+                    self.write({"spring_id":spring_id})
+                    _logger.info(f"Jugador creado en spring con ID {spring_id}")
+        except Exception as e:
+            _logger.error(f"Error enviando jugador a API: {e}")
+
+
     #Trigger para actualizar el nivel según el puntaje acumulado
     @api.depends('puntos_acumulados')
     def _compute_nivel(self):
         for record in self:
-            pts = record.puntos_acumulados 
+            ts = record.puntos_acumulados 
             #lógica para calcular el nivel
             if pts >= 1000: record.nivel = 100
             elif pts > 0 : record.nivel = pts // 10

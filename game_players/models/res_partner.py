@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 import logging
-
+_logger = logging.getLogger(__name__)
 LOGROS = [
     ('iniciado','Recluta de Campo'), # 3
     ('rastreador','Rastreador de Sombras'), # 10

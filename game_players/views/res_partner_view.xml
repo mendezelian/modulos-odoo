@@ -15,13 +15,15 @@
                         </group>
                         <group string="Progreso">
                             <div class="o_row">
+                                <label string="Nivel: "/>
                                 <field name="nivel" readonly="1" invisible="not is_player"/> 
+                                <label string="Barra de Progreso: "/>
                                 <field name="nivel" widget="progressbar"
                                     options="{'current_value':'nivel', 'max_value':100, 'editable':false, 'display_stat':false}"
                                     readonly="1" invisible="not is_player" nolabel="1"/>
                             </div>
                             <field name="logros" readonly="1" invisible="not is_player"/>
-                            <field name="puntos_acumulados"  invisible="not is_player"/>
+                            <field name="puntos_acumulados"  invisible="not is_player" readonly="1"/>
                         </group>
                     </group>
                 </page>

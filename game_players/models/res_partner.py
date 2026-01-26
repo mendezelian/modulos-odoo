@@ -41,6 +41,8 @@ class ResPartner(models.Model):
         record = super().create(vals)
         if vals.get("is_player"):
             record._send_player_to_api()
+        if vals.get("puntos_acumulados"):
+            record._get_puntos_acumulados_to_api()
         return record
 
     #Override write
@@ -49,6 +51,8 @@ class ResPartner(models.Model):
         for record in self:
             if vals.get("is_player") or record.is_player:
                 record._send_player_to_api()
+            if vals.get("puntos_acumulados") or record.puntos_acumulados:
+                record._get_puntos_acumulados_to_api()
         return res
     
     #metodo para enviar datos
@@ -73,7 +77,23 @@ class ResPartner(models.Model):
                     _logger.info(f"Jugador creado en spring con ID {spring_id}")
         except Exception as e:
             _logger.error(f"Error enviando jugador a API: {e}")
+    
+    #metodo para consultar puntos acumulados
+    def _get_puntos_acumulados_to_api(self):
+        url = "http://3.233.57.10:8000/api/v1/jugadores"
+        
+        try:
+            if self.spring_id:
+                response = requests.get(f"{url}/{self.spring_id}")
+                response.raise_for_status()
+                data = response.json()
+                puntos_acumulados = data.get("puntosAcumulados")
 
+                if puntos_acumulados:
+                    self.write({"puntos_acumulados":puntos_acumulados})
+                    _logger.info(f"Consulta Sastifactoria: puntos acumulados: {puntos_acumulados}")
+        except Exception as e:
+            _logger.error(f"Error al consultar la API: {e}")
 
     #Trigger para actualizar el nivel según el puntaje acumulado
     @api.depends('puntos_acumulados')

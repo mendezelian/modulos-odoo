@@ -3,7 +3,6 @@
     <record id = "view_player_form" model="ir.ui.view">
         <field name="name">my.player.form</field>
         <field name="model">my.player</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <form string="Jugador">
                 <sheet>

@@ -8,6 +8,8 @@
                 <sheet>
                     <group>
                         <group string="Identidad">
+                            <field name="nombre"/>
+                            <field name="email"/>
                             <field name="nickname"/>
                             <field name="avatar" widget="image" class="oe_avatar"/>
                         </group>
@@ -34,7 +36,8 @@
         <field name="model">my.player</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
+                <field name="nombre"/>
+                <field name="email"/>
                 <field name="nickname"/>
                 <field name="nivel"/>
                 <field name="puntos_acumulados"/>

@@ -17,9 +17,9 @@ LOGROS = [
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
-    is_player = fields.Boolean(string = "Es Jugador", default = False)
-    nickname = fields.Char(string = "Nickname")
-    avatar = fields.Image(string = "Avatar", max_width = 512, max_height = 512)
+    is_player = fields.Boolean(string = "Es Jugador", default = False, store = True)
+    nickname = fields.Char(string = "Nickname", store = True)
+    avatar = fields.Image(string = "Avatar", max_width = 512, max_height = 512, store = True)
     nivel = fields.Integer(
         string = "Nivel del jugador",
         compute = "_compute_nivel",

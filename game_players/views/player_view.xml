@@ -31,7 +31,7 @@
 
     <record id="view_player_tree" model="ir.ui.view">
         <field name="name">my.player.tree</field>
-        <field name="model">my_player</field>
+        <field name="model">my.player</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>

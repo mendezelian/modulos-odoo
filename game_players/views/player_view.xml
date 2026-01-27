@@ -29,7 +29,7 @@
         </field>
     </record>
 
-    <record id="view_player_tree" model="ir.ui.view">
+    <record id="view_player_list" model="ir.ui.view">
         <field name="name">my.player.tree</field>
         <field name="model">my.player</field>
         <field name="arch" type="xml">
@@ -46,7 +46,7 @@
     <record id="action_player" model="ir.actions.act_window">
         <field name="name">Jugadores</field>
         <field name="res_model">my.player</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Menu -->

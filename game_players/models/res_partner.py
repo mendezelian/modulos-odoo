@@ -32,7 +32,7 @@ class ResPartner(models.Model):
         compute = "_compute_logro",
         store = True
     )
-    spring_id = fields.Integer("ID de SPRING", readonly = True)
+    spring_id = fields.Integer("ID de SPRING",store = True,readonly = True)
     
 
     #Override create
@@ -50,8 +50,11 @@ class ResPartner(models.Model):
     def write(self,vals):
         res = super().write(vals)
         for record in self:
-            if vals.get("is_player"):
+            if vals.get("is_player") or record.is_player:
                 record._send_player_to_api()
+            if not vals.get("is_player") or record.is_player:
+                record._desactive_player():
+
             if vals.get("puntos_acumulados") or record.puntos_acumulados:
                 record._get_puntos_acumulados_to_api()
         return res
@@ -79,6 +82,11 @@ class ResPartner(models.Model):
         except Exception as e:
             _logger.error(f"Error enviando jugador a API: {e}")
     
+    def _desactive_player(slef):
+        url = "http://3.233.57.10:8080/api/v1/jugadores"
+        payload = {}
+    
+
     #metodo para consultar puntos acumulados
     def _get_puntos_acumulados_to_api(self):
         url = "http://3.233.57.10:8000/api/v1/jugadores"

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id = "view_player_form" model="ir.ui.view">
-        <field name="name">my.player.form</field>
-        <field name="model">my.player</field>
+        <field name="name">res_partner.form</field>
+        <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//sheet/notebook" position="inside">
-                <page string="Jugador" attrs="{'invisible': [('is_player','=','False')]}">
+	<field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+		<page string="Jugador" name="player_stats">
                     <group>
-                        <group string="Identidad">
-                            <field name="nickname"/>
-                            <field name="avatar" widget="image" class="oe_avatar"/>
+			<group string="Identidad">
+	                    <field name="is_player"/>
+                            <field name="nickname" invisible="not is_player"/>
+                            <field name="avatar" widget="image" class="oe_avatar" invisible="not is_player"/>
                         </group>
-                        <group string="Progreso">
+                        <group string="Progreso" invisible="not is_player">
                             <div class="o_row">
                                 <label string="Nivel: " for="nivel"/>
                                 <field name="nivel" readonly="1"/> 

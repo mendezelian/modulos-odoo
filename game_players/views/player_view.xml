@@ -33,12 +33,12 @@
         <field name="name">my.player.tree</field>
         <field name="model">my_player</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="nickname"/>
                 <field name="nivel"/>
                 <field name="puntos_acumulados"/>
-            </tree>
+            </list>
         </field>
     </record>
 

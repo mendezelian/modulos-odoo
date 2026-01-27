@@ -10,7 +10,7 @@
         'contacts'
     ],
     'data': [
-        'views/res_partner_view.xml'
+        'views/player_view.xml'
     ],
     'installable':True,
     'application':True,

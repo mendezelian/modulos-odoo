@@ -10,7 +10,6 @@
         'contacts'
     ],
     'data': [
-        'security/ir.model.access.csv',
         'views/player_view.xml'
     ],
     'installable':True,

@@ -15,9 +15,16 @@ LOGROS = [
     ('debora_mundos','El Debora Mundos'), #50
 ]
 
-class ResPartner(models.Model):
-    _inherit = 'res.partner' # Se crea el modelo
-    is_player = fields.Boolean(string = "Es Jugador")
+class Player(models.Model):
+    _name = "my.player"
+    _description = "Jugador"
+    name = fields.Char(required = True)
+    partnerId = fields.Many2one(
+        "res.partner",
+        string = "Contacto asociado",
+        required = False
+    )
+
     nickname = fields.Char(string = "Nickname")
     avatar = fields.Image(string = "Avatar", max_width = 512, max_height = 512)
     nivel = fields.Integer(
@@ -39,8 +46,8 @@ class ResPartner(models.Model):
     @api.model
     def create(self,vals):
         record = super().create(vals)
-        if vals.get("is_player"):
-            record._send_player_to_api()
+        record._send_player_to_api()
+        
         if vals.get("puntos_acumulados"):
             record._get_puntos_acumulados_to_api()
         return record
@@ -49,8 +56,7 @@ class ResPartner(models.Model):
     def write(self,vals):
         res = super().write(vals)
         for record in self:
-            if vals.get("is_player") or record.is_player:
-                record._send_player_to_api()
+            record._send_player_to_api()
             if vals.get("puntos_acumulados") or record.puntos_acumulados:
                 record._get_puntos_acumulados_to_api()
         return res

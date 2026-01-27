@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id = "view_player_form" model="ir.ui.view">
+        <field name="name">my.player.form</field>
+        <field name="model">my.player</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <form string="Jugador">
+                <sheet>
+                    <group>
+                        <group string="Identidad">
+                            <field name="nickname"/>
+                            <field name="avatar" widget="image" class="oe_avatar"/>
+                        </group>
+                        <group string="Progreso">
+                            <div class="o_row">
+                                <label string="Nivel: "/>
+                                <field name="nivel" readonly="1"/> 
+                                <label string="Barra de Progreso: "/>
+                                <field name="nivel" widget="progressbar"
+                                    options="{'current_value':'nivel', 'max_value':100, 'editable':false, 'display_stat':false}"
+                                    readonly="1" nolabel="1"/>
+                            </div>
+                            <field name="logros" readonly="1"/>
+                            <field name="puntos_acumulados" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_player_tree" model="ir.ui.view">
+        <field name="name">my.player.tree</field>
+        <field name="model">my_player</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="nickname"/>
+                <field name="nivel"/>
+                <field name="puntos_acumulados"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Action-->
+    <record id="action_player" model="ir.actions.act_window">
+        <field name="name">Jugadores</field>
+        <field name="res_model">my.player</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_player_root" name="Jugadores" sequence="10"/>
+    <menuitem id="menu_player" parent="menu_player_root=" action="action_player" name="Gestión de Jugadores" />
+</odoo>

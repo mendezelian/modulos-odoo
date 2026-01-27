@@ -16,7 +16,7 @@ LOGROS = [
 ]
 
 class ResPartner(models.Model):
-    _inherit = "res.partnet"
+    _inherit = "res.partner"
     is_player = fields.Boolean(string = "Es Jugador", default = False)
     nickname = fields.Char(string = "Nickname")
     avatar = fields.Image(string = "Avatar", max_width = 512, max_height = 512)

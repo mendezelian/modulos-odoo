@@ -14,9 +14,9 @@
                         </group>
                         <group string="Progreso">
                             <div class="o_row">
-                                <label string="Nivel: "/>
+                                <label string="Nivel: " for="nivel"/>
                                 <field name="nivel" readonly="1"/> 
-                                <label string="Barra de Progreso: "/>
+                                <label string="Barra de Progreso: " for="nivel"/>
                                 <field name="nivel" widget="progressbar"
                                     options="{'current_value':'nivel', 'max_value':100, 'editable':false, 'display_stat':false}"
                                     readonly="1" nolabel="1"/>

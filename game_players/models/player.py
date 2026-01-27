@@ -18,13 +18,13 @@ LOGROS = [
 class Player(models.Model):
     _name = "my.player"
     _description = "Jugador"
-    partnerId = fields.Many2one(
+    partner_id = fields.Many2one(
         "res.partner",
         string = "Contacto asociado",
         required = False
     )
-    name = fields.Char(string = "Nombre",related="partnerId.name",store=True,required = False)
-    email = fields.Char(related="partnerId.email",store=True,required = False)
+    name = fields.Char(string = "Nombre",related="partner_id.name",store=True,required = True, readonly = False)
+    email = fields.Char(related="partner_id.email",store=True,required = True, readonly = False)
 
     nickname = fields.Char(string = "Nickname")
     avatar = fields.Image(string = "Avatar", max_width = 512, max_height = 512)

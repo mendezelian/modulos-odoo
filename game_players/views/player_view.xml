@@ -51,5 +51,5 @@
 
     <!-- Menu -->
     <menuitem id="menu_player_root" name="Jugadores" sequence="10"/>
-    <menuitem id="menu_player" parent="menu_player_root=" action="action_player" name="Gestión de Jugadores" />
+    <menuitem id="menu_player" parent="menu_player_root" action="action_player" name="Gestión de Jugadores" />
 </odoo>

@@ -53,7 +53,7 @@ class ResPartner(models.Model):
             if vals.get("is_player") or record.is_player:
                 record._send_player_to_api()
             if not vals.get("is_player") or record.is_player:
-                record._change_player_state():
+                record._change_player_state()
 
             if vals.get("puntos_acumulados") or record.puntos_acumulados:
                 record._get_puntos_acumulados_to_api()

@@ -53,7 +53,7 @@ class ResPartner(models.Model):
             if vals.get("is_player") or record.is_player:
                 record._send_player_to_api()
             if not vals.get("is_player") or record.is_player:
-                record._desactive_player():
+                record._change_player_state():
 
             if vals.get("puntos_acumulados") or record.puntos_acumulados:
                 record._get_puntos_acumulados_to_api()
@@ -69,23 +69,34 @@ class ResPartner(models.Model):
         }
 
         try:
-            if not self.spring_id:
-                response = requests.post(url, json = payload, timeout=5)
-                response.raise_for_status()
+            if self.is_player:
+                if not self.spring_id:
+                    if self.nickname and self.email:
+                        response = requests.post(url, json = payload, timeout=5)
+                        response.raise_for_status()
                 
-                data = response.json()
-                spring_id = data.get("id")
+                        data = response.json()
+                        spring_id = data.get("id")
 
                 if spring_id:
                     self.write({"spring_id":spring_id})
                     _logger.info(f"Jugador creado en spring con ID {spring_id}")
         except Exception as e:
             _logger.error(f"Error enviando jugador a API: {e}")
-    
-    def _desactive_player(slef):
+    #queda pendiente terminar el cambio de estado
+    def _change_player_state(self):
         url = "http://3.233.57.10:8080/api/v1/jugadores"
-        payload = {}
-    
+        payload = {
+            is_active = self.is_player
+        }
+        try:
+            if self.spring_id:
+                response = requests.patch(f"url/{self.spring_id}", json = payload, timeout=5)
+                data = response.json()
+                if data:
+                    _logger.info(f"Desactivar/Activar Jugador : {data}")
+        except Exception as e:
+            _logger.error(f"Error al intentar camiar el estado del jugador en la API: {e}")
 
     #metodo para consultar puntos acumulados
     def _get_puntos_acumulados_to_api(self):

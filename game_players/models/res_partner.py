@@ -4,18 +4,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-LOGROS = [
-    ('iniciado','Recluta de Campo'),          # 50
-    ('rastreador','Rastreador de Sombras'),   # 200
-    ('acechador','Acechador Silvestre'),      # 300
-    ('cazador_pistas','Cazador de Pistas'),   # 400
-    ('capturador','Capturador Veloz'),        # 500
-    ('guerrero','Guerrero de Élite'),          # 600
-    ('depredador','Depredador de Bases'),     # 700
-    ('maestro_caza','Maestro de la Caza'),    # 800
-    ('leyenda_flag','Leyenda de la bandera'), # 900
-    ('debora_mundos','El Debora Mundos'),     # 1000
-]
+
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
@@ -56,12 +45,64 @@ class ResPartner(models.Model):
         store=True
     )
 
-    logros = fields.Selection(
-        selection=LOGROS,
-        string="Logros desbloqueados",
-        compute="_compute_logro",
+    level_progress = fields.Integer(
+        string="Progreso del Nivel",
+        compute="_compute_nivel",
+        store=True,
+        help="Porcentaje de progreso para alcanzar el siguiente nivel"
+    )
+
+    @api.depends("puntos_acumulados")
+    def _compute_nivel(self):
+        for record in self:
+            pts = record.puntos_acumulados or 0
+            # Lógica: 1 nivel cada 10 puntos (ajustable)
+            # Nivel = Parte entera de puntos / 10
+            # Progreso = El resto (puntos % 10) * 10 (para hacerlo %)
+            
+            if pts >= 1000:
+                record.nivel = 100
+                record.level_progress = 100
+            else:
+                record.nivel = pts // 10
+                # Cálculo de progreso: (Puntos en el nivel actual) / (Puntos necesarios por nivel) * 100
+                # Puntos necesarios por nivel = 10
+                start_level_pts = record.nivel * 10
+                progress_pts = pts - start_level_pts
+                record.level_progress = int((progress_pts / 10) * 100)
+                record.level_progress = int((progress_pts / 10) * 100)
+
+    rank_id = fields.Many2one(
+        'game.rank',
+        string="Rango",
+        compute="_compute_rank_id",
         store=True
     )
+    
+    rank_image = fields.Image(
+        related='rank_id.image',
+        string="Insignia"
+    )
+
+    session_count = fields.Integer(
+        string="Partidas Jugadas",
+        compute="_compute_session_count"
+    )
+
+    def _compute_session_count(self):
+        for record in self:
+            record.session_count = self.env['game.session'].search_count([('player_id', '=', record.id)])
+
+    def action_view_sessions(self):
+        self.ensure_one()
+        return {
+            'name': 'Sesiones de Juego',
+            'type': 'ir.actions.act_window',
+            'res_model': 'game.session',
+            'view_mode': 'tree,form',
+            'domain': [('player_id', '=', self.id)],
+            'context': {'default_player_id': self.id}
+        }
 
     # OVERRIDES
 
@@ -129,7 +170,7 @@ class ResPartner(models.Model):
             _logger.error(f"Error al cambiar estado del jugador: {e}")
 
     def _get_puntos_acumulados_to_api(self):
-        url = "http://3.233.57.10:8000/api/v1/jugadores"
+        url = "http://3.233.57.10:8080/api/v1/jugadores"
 
         try:
             response = requests.get(
@@ -145,7 +186,14 @@ class ResPartner(models.Model):
             return puntos_acumulados
         except Exception as e:
             _logger.error(f"Error al consultar puntos en la API: {e}")
-            return 0
+            pass
+        return 0
+
+    @api.model
+    def cron_update_player_scores(self):
+        players = self.search([('is_player', '=', True), ('spring_id', '!=', False)])
+        for player in players:
+            player.action_sync_puntos() # Reuse existing logic
 
 
     # COMPUTES
@@ -157,33 +205,16 @@ class ResPartner(models.Model):
             if record.is_player and record.spring_id:
                 record.puntos_acumulados = record._get_puntos_acumulados_to_api()
 
-    @api.depends("puntos_acumulados")
-    def _compute_nivel(self):
-        for record in self:
-            pts = record.puntos_acumulados or 0
-            if pts >= 1000:
-                record.nivel = 100
-            elif pts > 0:
-                record.nivel = pts // 10
-            else:
-                record.nivel = 0
+
 
     @api.depends("puntos_acumulados")
-    def _compute_logro(self):
+    def _compute_rank_id(self):
         for record in self:
             pts = record.puntos_acumulados or 0
-
-            if pts >= 1000: record.logros = 'debora_mundos'
-            elif pts >= 900: record.logros = 'leyenda_flag'
-            elif pts >= 800: record.logros = 'maestro_caza'
-            elif pts >= 700: record.logros = 'depredador'
-            elif pts >= 600: record.logros = 'guerrero'
-            elif pts >= 500: record.logros = 'capturador'
-            elif pts >= 400: record.logros = 'cazador_pistas'
-            elif pts >= 300: record.logros = 'acechador'
-            elif pts >= 200: record.logros = 'rastreador'
-            elif pts >= 50:  record.logros = 'iniciado'
-            else:            record.logros = False
+            # Busca el rango más alto que tenga min_points <= pts
+            # Usamos sudo() por si el usuario no tiene permisos de lectura sobre game.rank (aunque debería)
+            rank = self.env['game.rank'].search([('min_points', '<=', pts)], order='min_points desc', limit=1)
+            record.rank_id = rank
 
     def action_sync_puntos(self):
         for record in self:

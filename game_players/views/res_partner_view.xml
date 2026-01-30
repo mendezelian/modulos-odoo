@@ -6,7 +6,10 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
 	<field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-		<page string="Jugador" name="player_stats">
+                <header>
+                    <button name="action_sync_puntos" string="Actualizar Puntos" type="object" class="oe_highlight" invisible="not is_player"/>
+                </header>
+                <page string="Jugador" name="player_stats">
                     <group>
 			<group string="Identidad">
 	                    <field name="is_player"/>
@@ -17,16 +20,42 @@
                             <div class="o_row">
                                 <label string="Nivel: " for="nivel"/>
                                 <field name="nivel" readonly="1"/> 
-                                <label string="Barra de Progreso: " for="nivel"/>
-                                <field name="nivel" widget="progressbar"
-                                    options="{'current_value':'nivel', 'max_value':100, 'editable':false, 'display_stat':false}"
+                                <label string="Barra de Progreso: " for="level_progress"/>
+                                <field name="level_progress" widget="progressbar"
+                                    options="{'current_value':'level_progress', 'max_value':100, 'editable':false, 'display_stat':false}"
                                     readonly="1" nolabel="1"/>
                             </div>
-                            <field name="logros" readonly="1"/>
+
+                            <div class="o_row">
+                                <label string="Rango: " for="rank_id"/>
+                                <field name="rank_id" readonly="1"/>
+                                <field name="rank_image" widget="image" height="50" width="50" nolabel="1" class="oe_avatar"/>
+                            </div>
+
                             <field name="puntos_acumulados" readonly="1"/>
                         </group>
                     </group>
                 </page>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_sessions" type="object" class="oe_stat_button" icon="fa-gamepad" invisible="not is_player">
+                    <field name="session_count" widget="statinfo" string="Partidas"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- KANBAN INHERITANCE -->
+    <record id="view_player_kanban" model="ir.ui.view">
+        <field name="name">res.partner.kanban.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]" position="inside">
+                <div t-if="record.is_player.raw_value">
+                    <field name="rank_image" widget="image" options="{'max_width': 30, 'max_height': 30}" class="float-end"/>
+                    <span class="badge text-bg-warning" t-if="record.nivel.raw_value">Lvl <field name="nivel"/></span>
+                </div>
             </xpath>
         </field>
     </record>

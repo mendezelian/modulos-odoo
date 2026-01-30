@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="rank_iniciado" model="game.rank">
+            <field name="name">Recluta de Campo</field>
+            <field name="min_points">50</field>
+        </record>
+        <record id="rank_rastreador" model="game.rank">
+            <field name="name">Rastreador de Sombras</field>
+            <field name="min_points">200</field>
+        </record>
+        <record id="rank_acechador" model="game.rank">
+            <field name="name">Acechador Silvestre</field>
+            <field name="min_points">300</field>
+        </record>
+        <record id="rank_cazador" model="game.rank">
+            <field name="name">Cazador de Pistas</field>
+            <field name="min_points">400</field>
+        </record>
+        <record id="rank_capturador" model="game.rank">
+            <field name="name">Capturador Veloz</field>
+            <field name="min_points">500</field>
+        </record>
+        <record id="rank_guerrero" model="game.rank">
+            <field name="name">Guerrero de Élite</field>
+            <field name="min_points">600</field>
+        </record>
+        <record id="rank_depredador" model="game.rank">
+            <field name="name">Depredador de Bases</field>
+            <field name="min_points">700</field>
+        </record>
+        <record id="rank_maestro" model="game.rank">
+            <field name="name">Maestro de la Caza</field>
+            <field name="min_points">800</field>
+        </record>
+        <record id="rank_leyenda" model="game.rank">
+            <field name="name">Leyenda de la Bandera</field>
+            <field name="min_points">900</field>
+        </record>
+        <record id="rank_debora" model="game.rank">
+            <field name="name">El Devora Mundos</field>
+            <field name="min_points">1000</field>
+        </record>
+    </data>
+</odoo>

@@ -5,9 +5,11 @@
         <field name="model">game.rank</field>
         <field name="arch" type="xml">
             <list string="Rangos de Juego">
+            <list string="Rangos de Juego">
                 <field name="min_points"/>
                 <field name="name"/>
                 <field name="description"/>
+            </list>
             </list>
         </field>
     </record>
@@ -40,6 +42,7 @@
     <record id="action_game_rank" model="ir.actions.act_window">
         <field name="name">Rangos y Logros</field>
         <field name="res_model">game.rank</field>
+        <field name="view_mode">list,form</field>
         <field name="view_mode">list,form</field>
     </record>
 </odoo>

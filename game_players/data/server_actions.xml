@@ -10,7 +10,7 @@
         <field name="code">
 for record in records:
     if record.is_player and record.avatar:
-        record.image_1920 = record.avatar
+        record.write({'image_1920': record.avatar})
         </field>
     </record>
 </odoo>

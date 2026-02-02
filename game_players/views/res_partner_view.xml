@@ -17,22 +17,16 @@
                             <field name="avatar" widget="image" class="oe_avatar" invisible="not is_player"/>
                         </group>
                         <group string="Progreso" invisible="not is_player">
+                            <field name="nivel" readonly="1" class="font-weight-bold"/>
+                            <field name="level_progress" widget="progressbar"/>
+                            
+                            <label for="rank_id" string="Rango"/>
                             <div class="o_row">
-                                <label string="Nivel: " for="nivel"/>
-                                <field name="nivel" readonly="1"/> 
-                                <label string="Barra de Progreso: " for="level_progress"/>
-                                <field name="level_progress" widget="progressbar"
-                                    options="{'current_value':'level_progress', 'max_value':100, 'editable':false, 'display_stat':false}"
-                                    readonly="1" nolabel="1"/>
-                            </div>
-
-                            <div class="o_row">
-                                <label string="Rango: " for="rank_id"/>
+                                <field name="rank_image" widget="image" class="oe_avatar" options="{'size': [40, 40]}"/>
                                 <field name="rank_id" readonly="1"/>
-                                <field name="rank_image" widget="image" height="50" width="50" nolabel="1" class="oe_avatar"/>
                             </div>
 
-                            <field name="puntos_acumulados" readonly="1"/>
+                            <field name="puntos_acumulados" widget="statinfo"/>
                         </group>
                     </group>
                 </page>
@@ -56,6 +50,18 @@
                 <field name="nivel"/>
                 <field name="rank_image"/>
             </xpath>
+            <!-- FIX AVATAR IN KANBAN -->
+            <xpath expr="//div[hasclass('o_kanban_image')]" position="replace">
+                <div class="o_kanban_image">
+                    <t t-if="record.is_player.raw_value and record.avatar.value">
+                        <img t-att-src="kanban_image('res.partner', 'avatar', record.id.raw_value)" alt="Avatar"/>
+                    </t>
+                    <t t-else="">
+                        <img t-att-src="kanban_image('res.partner', 'image_128', record.id.raw_value)" alt="Avatar"/>
+                    </t>
+                </div>
+            </xpath>
+
             <xpath expr="//field[@name='display_name']" position="before">
                 <span t-if="record.is_player.raw_value" class="float-end">
                      <field name="rank_image" widget="image" options="{'max_width': 30, 'max_height': 30}"/>

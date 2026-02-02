@@ -5,11 +5,9 @@
         <field name="model">game.rank</field>
         <field name="arch" type="xml">
             <list string="Rangos de Juego">
-            <list string="Rangos de Juego">
                 <field name="min_points"/>
                 <field name="name"/>
                 <field name="description"/>
-            </list>
             </list>
         </field>
     </record>

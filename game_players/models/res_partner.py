@@ -15,6 +15,12 @@ class ResPartner(models.Model):
         store=True
     )
 
+    # Sync avatar to image_1920 for standard Odoo views
+    @api.onchange('avatar')
+    def _onchange_avatar(self):
+        if self.avatar:
+            self.image_1920 = self.avatar
+
     nickname = fields.Char(
         string="Nickname",
         store=True
@@ -36,19 +42,20 @@ class ResPartner(models.Model):
     puntos_acumulados = fields.Integer(
         string="Puntos Acumulados",
         compute="_compute_puntos_actualizados",
-        store=True
+        store=False,
+        readonly=True
     )
 
     nivel = fields.Integer(
         string="Nivel del jugador",
         compute="_compute_nivel",
-        store=True
+        store=False
     )
 
     level_progress = fields.Integer(
         string="Progreso del Nivel",
         compute="_compute_nivel",
-        store=True,
+        store=False,
         help="Porcentaje de progreso para alcanzar el siguiente nivel"
     )
 
@@ -75,7 +82,7 @@ class ResPartner(models.Model):
         'game.rank',
         string="Rango",
         compute="_compute_rank_id",
-        store=True
+        store=False
     )
     
     rank_image = fields.Image(
@@ -110,6 +117,8 @@ class ResPartner(models.Model):
         record = super().create(vals)
         if vals.get("is_player"):
             record._send_player_to_api()
+        if vals.get("avatar"):
+             record.image_1920 = vals.get("avatar")
         return record
 
     def write(self, vals):
@@ -119,6 +128,8 @@ class ResPartner(models.Model):
                 if record.is_player:
                     record._send_player_to_api()
                 record._change_player_state()
+            if "avatar" in vals:
+                record.image_1920 = record.avatar
         return res
 
     # SPRING API

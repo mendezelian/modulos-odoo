@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action for Players Only View -->
+    <record id="action_players_only" model="ir.actions.act_window">
+        <field name="name">Jugadores</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('is_player', '=', True)]</field>
+        <field name="context">{'default_is_player': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay jugadores registrados
+            </p>
+            <p>
+                Haz clic en "Nuevo" para crear tu primer jugador.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Players -->
+    <menuitem id="menu_players" 
+              name="Jugadores" 
+              parent="contacts.menu_contacts" 
+              action="action_players_only" 
+              sequence="5"/>
+</odoo>

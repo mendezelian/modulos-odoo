@@ -15,7 +15,8 @@
         'data/game_rank_data.xml',
         'data/server_actions.xml',
         'views/res_partner_view.xml',
-        'views/game_rank_view.xml'
+        'views/game_rank_view.xml',
+        'views/players_menu.xml'
     ],
     'installable':True,
     'application':True,

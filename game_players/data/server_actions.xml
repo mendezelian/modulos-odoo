@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Server Action to Sync Avatars to Standard Odoo Image Field -->
+    <record id="action_sync_player_avatars" model="ir.actions.server">
+        <field name="name">Sincronizar Avatares a Imagen Principal</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+for record in records:
+    if record.is_player and record.avatar:
+        record.image_1920 = record.avatar
+        </field>
+    </record>
+</odoo>

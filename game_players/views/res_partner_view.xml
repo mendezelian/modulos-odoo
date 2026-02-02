@@ -26,7 +26,7 @@
                                 <field name="rank_id" readonly="1"/>
                             </div>
 
-                            <field name="puntos_acumulados" widget="statinfo"/>
+                            <field name="puntos_acumulados" readonly="1"/>
                         </group>
                     </group>
                 </page>
@@ -49,23 +49,13 @@
                 <field name="is_player"/>
                 <field name="nivel"/>
                 <field name="rank_image"/>
-            </xpath>
-            <!-- FIX AVATAR IN KANBAN -->
-            <xpath expr="//div[hasclass('o_kanban_image')]" position="replace">
-                <div class="o_kanban_image">
-                    <t t-if="record.is_player.raw_value and record.avatar.value">
-                        <img t-att-src="kanban_image('res.partner', 'avatar', record.id.raw_value)" alt="Avatar"/>
-                    </t>
-                    <t t-else="">
-                        <img t-att-src="kanban_image('res.partner', 'image_128', record.id.raw_value)" alt="Avatar"/>
-                    </t>
-                </div>
+                <field name="avatar"/>
             </xpath>
 
             <xpath expr="//field[@name='display_name']" position="before">
                 <span t-if="record.is_player.raw_value" class="float-end">
                      <field name="rank_image" widget="image" options="{'max_width': 30, 'max_height': 30}"/>
-                     <span class="badge text-bg-warning" style="font-size: 0.8rem;" t-if="record.is_player.raw_value">Lvl <field name="nivel"/></span>
+                     <span class="badge text-bg-warning" style="font-size: 0.8rem;">Lvl <field name="nivel"/></span>
                 </span>
             </xpath>
         </field>

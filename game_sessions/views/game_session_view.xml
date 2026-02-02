@@ -12,6 +12,7 @@
                 <field name="game_id"/>
                 <field name="score"/>
                 <field name="state"/>
+                <field name="date_start"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
@@ -80,14 +81,14 @@
         <field name="name">game.session.tree</field>
         <field name="model">game.session</field>
         <field name="arch" type="xml">
-            <tree string="Sesiones de Juego">
+            <list string="Sesiones de Juego">
                 <field name="name"/>
                 <field name="player_id"/>
                 <field name="game_id"/>
                 <field name="date_start"/>
                 <field name="score"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -95,7 +96,7 @@
     <record id="action_game_session" model="ir.actions.act_window">
         <field name="name">Sesiones de Juego</field>
         <field name="res_model">game.session</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Crear la primera sesión de juego

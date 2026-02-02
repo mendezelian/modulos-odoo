@@ -51,10 +51,15 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('oe_kanban_details')]" position="inside">
-                <div t-if="record.is_player.raw_value">
-                    <field name="rank_image" widget="image" options="{'max_width': 30, 'max_height': 30}" class="float-end"/>
-                    <span class="badge text-bg-warning" t-if="record.nivel.raw_value">Lvl <field name="nivel"/></span>
+            <xpath expr="//templates" position="before">
+                <field name="is_player"/>
+                <field name="nivel"/>
+                <field name="rank_image"/>
+            </xpath>
+            <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="before">
+                <div t-if="record.is_player.raw_value" class="float-end">
+                     <field name="rank_image" widget="image" options="{'max_width': 30, 'max_height': 30}"/>
+                     <span class="badge text-bg-warning" style="font-size: 0.8rem;" t-if="record.is_player.raw_value">Lvl <field name="nivel"/></span>
                 </div>
             </xpath>
         </field>

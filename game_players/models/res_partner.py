@@ -70,7 +70,6 @@ class ResPartner(models.Model):
                 start_level_pts = record.nivel * 10
                 progress_pts = pts - start_level_pts
                 record.level_progress = int((progress_pts / 10) * 100)
-                record.level_progress = int((progress_pts / 10) * 100)
 
     rank_id = fields.Many2one(
         'game.rank',
@@ -99,7 +98,7 @@ class ResPartner(models.Model):
             'name': 'Sesiones de Juego',
             'type': 'ir.actions.act_window',
             'res_model': 'game.session',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('player_id', '=', self.id)],
             'context': {'default_player_id': self.id}
         }

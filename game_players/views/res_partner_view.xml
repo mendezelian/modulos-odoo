@@ -56,11 +56,11 @@
                 <field name="nivel"/>
                 <field name="rank_image"/>
             </xpath>
-            <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="before">
-                <div t-if="record.is_player.raw_value" class="float-end">
+            <xpath expr="//field[@name='display_name']" position="before">
+                <span t-if="record.is_player.raw_value" class="float-end">
                      <field name="rank_image" widget="image" options="{'max_width': 30, 'max_height': 30}"/>
                      <span class="badge text-bg-warning" style="font-size: 0.8rem;" t-if="record.is_player.raw_value">Lvl <field name="nivel"/></span>
-                </div>
+                </span>
             </xpath>
         </field>
     </record>

@@ -55,7 +55,7 @@
 
             <xpath expr="//field[@name='display_name']" position="before">
                 <div t-if="record.is_player.raw_value" class="ribbon ribbon-top-right">
-                    <span class="bg-warning">Lvl <field name="nivel"/></span>
+                    <span class="bg-warning">Lvl <t t-esc="record.nivel.value"/></span>
                 </div>
             </xpath>
 

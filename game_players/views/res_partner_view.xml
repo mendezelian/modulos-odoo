@@ -68,18 +68,7 @@
                 </div>
             </xpath>
 
-            <xpath expr="//ul[hasclass('o_kanban_card_manage_section')]" position="before">
-                <div t-if="record.is_player.raw_value" class="row mt8">
-                    <div class="col-6 text-center">
-                        <strong class="text-primary" style="font-size: 1.2em;"><field name="nivel"/></strong>
-                        <div class="text-muted" style="font-size: 0.8em;">Nivel</div>
-                    </div>
-                    <div class="col-6 text-center">
-                        <strong class="text-success" style="font-size: 1.2em;"><field name="puntos_acumulados"/></strong>
-                        <div class="text-muted" style="font-size: 0.8em;">Puntos</div>
-                    </div>
-                </div>
-            </xpath>
+
         </field>
     </record>
 </odoo>

@@ -163,3 +163,14 @@ class GameSession(models.Model):
                     _logger.error(f"Failed to create session for match {spring_match_id}: {e}")
                 
         _logger.info(f"Sync complete. Created {count_created} new sessions.")
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Sincronización Completada',
+                'message': f"Se han creado {count_created} nuevas sesiones.",
+                'type': 'success',
+                'sticky': False,
+            }
+        }

@@ -112,14 +112,25 @@ class GameSession(models.Model):
 
             for jug in jugadores:
                 spring_player_id = jug.get('id')
+                spring_player_name = jug.get('nombre')
                 score = jug.get('score', 0)
                 
-                # Find player
+                # Find player or create
                 player = self.env['res.partner'].search([('spring_id', '=', spring_player_id), ('is_player', '=', True)], limit=1)
                 
                 if not player:
-                    continue
-                    
+                    # Try by name if unique? No, safe to create new one or check by name?
+                    # API doesn't give email here.
+                    # Let's create a new player if not found by ID.
+                     vals = {
+                        'name': spring_player_name or f"Player {spring_player_id}",
+                        'spring_id': spring_player_id,
+                        'is_player': True,
+                        'nickname': spring_player_name
+                     }
+                     player = self.env['res.partner'].create(vals)
+                     _logger.info(f"Created new player from match: {player.name}")
+
                 # Check if session already exists
                 existing = self.search([('spring_id', '=', spring_match_id), ('player_id', '=', player.id)], limit=1)
                 if existing:
@@ -130,7 +141,7 @@ class GameSession(models.Model):
                     'name': f"Partida {spring_match_id}",
                     'player_id': player.id,
                     'game_id': product.id,
-                    'date_start': date_str, # Odoo handles 'YYYY-MM-DD' usually fine for datetime fields if it's just date
+                    'date_start': date_str, 
                     'duration': duration_minutes,
                     'score': score,
                     'spring_id': spring_match_id,

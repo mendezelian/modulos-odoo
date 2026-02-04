@@ -110,6 +110,12 @@ class GameSession(models.Model):
                 except:
                     pass
 
+            # Parse date
+            try:
+                date_start = fields.Datetime.to_datetime(date_str)
+            except:
+                date_start = fields.Datetime.now()
+
             for jug in jugadores:
                 spring_player_id = jug.get('id')
                 spring_player_name = jug.get('nombre')
@@ -119,34 +125,41 @@ class GameSession(models.Model):
                 player = self.env['res.partner'].search([('spring_id', '=', spring_player_id), ('is_player', '=', True)], limit=1)
                 
                 if not player:
-                    # Try by name if unique? No, safe to create new one or check by name?
-                    # API doesn't give email here.
-                    # Let's create a new player if not found by ID.
                      vals = {
                         'name': spring_player_name or f"Player {spring_player_id}",
                         'spring_id': spring_player_id,
                         'is_player': True,
-                        'nickname': spring_player_name
+                        'nickname': spring_player_name,
+                        'email': jug.get('email', False) # If available
                      }
-                     player = self.env['res.partner'].create(vals)
-                     _logger.info(f"Created new player from match: {player.name}")
+                     try:
+                        player = self.env['res.partner'].create(vals)
+                        _logger.info(f"Created new player from match: {player.name}")
+                     except Exception as e:
+                        _logger.error(f"Failed to create player {spring_player_name}: {e}")
+                        continue
 
                 # Check if session already exists
-                existing = self.search([('spring_id', '=', spring_match_id), ('player_id', '=', player.id)], limit=1)
+                domain = [('spring_id', '=', spring_match_id), ('player_id', '=', player.id)]
+                existing = self.search(domain, limit=1)
                 if existing:
                     continue
                 
                 # Create session
-                self.create({
+                vals_session = {
                     'name': f"Partida {spring_match_id}",
                     'player_id': player.id,
                     'game_id': product.id,
-                    'date_start': date_str, 
+                    'date_start': date_start, 
                     'duration': duration_minutes,
                     'score': score,
                     'spring_id': spring_match_id,
                     'state': 'finished'
-                })
-                count_created += 1
+                }
+                try:
+                    self.create(vals_session)
+                    count_created += 1
+                except Exception as e:
+                    _logger.error(f"Failed to create session for match {spring_match_id}: {e}")
                 
         _logger.info(f"Sync complete. Created {count_created} new sessions.")

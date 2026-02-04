@@ -86,7 +86,7 @@ class ResPartner(models.Model):
     )
     
     rank_image = fields.Image(
-        related='rank_id.image',
+        related='rank_id.image_128',
         string="Insignia"
     )
 

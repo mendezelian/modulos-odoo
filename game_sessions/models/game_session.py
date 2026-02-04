@@ -86,7 +86,6 @@ class GameSession(models.Model):
             product = self.env['product.product'].create({
                 'name': 'Spring Game',
                 'type': 'service',
-                'detailed_type': 'service',
             })
 
         count_created = 0

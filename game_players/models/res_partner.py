@@ -231,3 +231,54 @@ class ResPartner(models.Model):
             if record.is_player and record.spring_id:
                 record.puntos_acumulados = record._get_puntos_acumulados_to_api()
 
+    @api.model
+    def action_sync_players_from_api(self):
+        url = "http://3.233.57.10:8080/api/v1/jugadores"
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            players_data = response.json()
+        except Exception as e:
+             _logger.error(f"Error syncing players: {e}")
+             return
+
+        count_created = 0
+        count_updated = 0
+        
+        for p_data in players_data:
+            spring_id = p_data.get('id')
+            email = p_data.get('email')
+            name = p_data.get('nombre')
+            
+            if not spring_id:
+                continue
+
+            # Search by spring_id first (most reliable)
+            domain = [('spring_id', '=', spring_id), ('is_player', '=', True)]
+            player = self.search(domain, limit=1)
+            
+            # Fallback: Search by email if valid generic partner exists
+            if not player and email:
+                 player = self.search([('email', '=', email)], limit=1)
+
+            vals = {
+                'spring_id': spring_id,
+                'nickname': name,
+                'is_player': True,
+            }
+            if name: 
+                 vals['name'] = name 
+
+            if email:
+                vals['email'] = email
+
+            if player:
+                player.write(vals)
+                count_updated += 1
+            else:
+                vals['name'] = name or "Unknown Player"
+                self.create(vals)
+                count_created += 1
+
+        _logger.info(f"Player Sync: Created {count_created}, Updated {count_updated}")
+

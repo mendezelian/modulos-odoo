@@ -8,6 +8,8 @@
     'depends': ['base', 'game_players', 'product'],
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_cron_data.xml',
+        'data/server_actions.xml',
         'views/game_session_view.xml',
     ],
     'installable': True,
